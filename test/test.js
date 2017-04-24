@@ -89,6 +89,7 @@ describe('Working ?', function( ) {
 	  			.then((obj) => {
 	  				obj.should.have.property('ok', 1)
 					preUpdateSpy.callCount.should.eql(1)
+					postUpdateSpy.reset()
 					done()
 	  			})
 	  			.catch((err) => {
@@ -110,6 +111,50 @@ describe('Working ?', function( ) {
 	  			.then((obj) => {
 	  				obj.should.have.property('ok', 1)
 					postUpdateSpy.callCount.should.eql(1)
+					done()
+	  			})
+	  			.catch((err) => {
+	  				console.log(err)
+	  			})
+	  			
+	  		})
+	  		.catch((err) => {
+	  			console.log(err)
+	  		})
+	  	})
+	})
+
+	describe('Delete Hooks', function() {
+		it('call pre hook listeners', function(done) {
+	  		let test = new TestModel({
+	  			name: 'preDelete'
+	  		})
+	  		test.save()
+	  		.then((doc) => {
+	  			doc.remove()
+	  			.then((obj) => {
+					preDeleteSpy.callCount.should.eql(1)
+					postDeleteSpy.reset()
+					done()
+	  			})
+	  			.catch((err) => {
+	  				console.log(err)
+	  			})
+	  			
+	  		})
+	  		.catch((err) => {
+	  			console.log(err)
+	  		})
+	  	})
+	  	it('call post hook listeners', function(done) {
+	  		let test = new TestModel({
+	  			name: 'postDelete'
+	  		})
+	  		test.save()
+	  		.then((doc) => {
+	  			doc.remove()
+	  			.then((obj) => {
+					postDeleteSpy.callCount.should.eql(1)
 					done()
 	  			})
 	  			.catch((err) => {
